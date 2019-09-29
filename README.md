@@ -1,3 +1,5 @@
+<img src="https://img.shields.io/travis/misterjoshua/docker-push-semver-bash" alt="Build Status">
+
 # Docker Push Semver (For Bash)
 This is a bash-based script to push semver-tagged docker images. After building `myuser/myrepo:latest` locally, given a version number, this script will push `myuser/myrepo:latest` and `myuser/myrepo:$VERSION`. If the version string is a plain semver version such as `3.2.1` (not `3.2.1-prerelease`) the script will also push these tags: `$MAJOR.$MINOR`, and `$MAJOR`.
 
@@ -41,5 +43,3 @@ script:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 - dockerPushSemver $DOCKER_REPO `git describe --tags`
 ```
-
-## Bitbucket Pipelines Example
