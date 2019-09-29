@@ -16,7 +16,7 @@ grep "t.*st" <<<$TEST || die "here-string doesn't work in this bash"
 
 OUTPUT=$(dockerPushSemver "test-1" "1.2.3-test")
 cat <<<$OUTPUT
-grep "push.*test-1:latest\$" <<<$OUTPUT >/dev/null || die "It didn't push test-1:latest"
+grep "push.*test-1:latest" <<<$OUTPUT >/dev/null || die "It didn't push test-1:latest"
 grep "push.*test-1:1.2.3-test\$" <<<$OUTPUT >/dev/null || die "It didn't push test-1:1.2.3-test"
 grep "push.*test-1:1.2.3\$" <<<$OUTPUT >/dev/null && die "It pushed test-1:1.2.3 with a SPECIAL"
 grep "push.*test-1:1.2\$" <<<$OUTPUT >/dev/null && die "It pushed test-1:1.2 with a SPECIAL"
