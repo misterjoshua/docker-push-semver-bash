@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 source docker_push_semver.sh
 
 function docker() {
