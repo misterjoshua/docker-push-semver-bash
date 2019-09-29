@@ -11,6 +11,9 @@ function die() {
     exit 1
 }
 
+TEST="test"
+grep "test" <<<$TEST || die "here-string doesn't work in this bash"
+
 DOCKER_REPO="test-1"
 OUTPUT=$(dockerPushSemver "$DOCKER_REPO" "1.2.3-test")
 grep "push.*$DOCKER_REPO:latest$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:latest"
