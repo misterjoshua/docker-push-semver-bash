@@ -12,19 +12,21 @@ function die() {
 }
 
 TEST="test"
-egrep "t.*st" <<<$TEST || die "here-string doesn't work in this bash"
+grep "t.*st" <<<$TEST || die "here-string doesn't work in this bash"
 
 DOCKER_REPO="test-1"
 OUTPUT=$(dockerPushSemver "$DOCKER_REPO" "1.2.3-test")
-egrep "push.*$DOCKER_REPO:latest\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:latest"
-egrep "push.*$DOCKER_REPO:1.2.3-test\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1.2.3-test"
-egrep "push.*$DOCKER_REPO:1.2.3\$" <<<$OUTPUT >/dev/null && die "It pushed $DOCKER_REPO:1.2.3 with a SPECIAL"
-egrep "push.*$DOCKER_REPO:1.2\$" <<<$OUTPUT >/dev/null && die "It pushed $DOCKER_REPO:1.2 with a SPECIAL"
-egrep "push.*$DOCKER_REPO:1\$" <<<$OUTPUT >/dev/null && die "It pushed $DOCKER_REPO:1 with a SPECIAL"
+cat <<<$OUTPUT
+grep "push.*$DOCKER_REPO:latest\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:latest"
+grep "push.*$DOCKER_REPO:1.2.3-test\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1.2.3-test"
+grep "push.*$DOCKER_REPO:1.2.3\$" <<<$OUTPUT >/dev/null && die "It pushed $DOCKER_REPO:1.2.3 with a SPECIAL"
+grep "push.*$DOCKER_REPO:1.2\$" <<<$OUTPUT >/dev/null && die "It pushed $DOCKER_REPO:1.2 with a SPECIAL"
+grep "push.*$DOCKER_REPO:1\$" <<<$OUTPUT >/dev/null && die "It pushed $DOCKER_REPO:1 with a SPECIAL"
 
 DOCKER_REPO="test-2"
 OUTPUT=$(dockerPushSemver "$DOCKER_REPO" "1.2.3")
-egrep "push.*$DOCKER_REPO:latest\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:latest"
-egrep "push.*$DOCKER_REPO:1.2.3\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1.2.3"
-egrep "push.*$DOCKER_REPO:1.2\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1.2"
-egrep "push.*$DOCKER_REPO:1\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1"
+cat <<<$OUTPUT
+grep "push.*$DOCKER_REPO:latest\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:latest"
+grep "push.*$DOCKER_REPO:1.2.3\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1.2.3"
+grep "push.*$DOCKER_REPO:1.2\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1.2"
+grep "push.*$DOCKER_REPO:1\$" <<<$OUTPUT >/dev/null || die "It didn't push $DOCKER_REPO:1"
