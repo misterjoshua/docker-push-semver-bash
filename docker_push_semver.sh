@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+function dockerPushSemverUsage() {
+    echo -e "usage: docker_push_semver.sh [-d] [-b <tag>] [-v <variation>] <docker_repo> <semantic_version>"
+    echo -e "  Tag and push docker images for major and minor versions of a locally built"
+    echo -e "  image if the version number provided doesn't include a pre-release tag."
+    echo -e ""
+    echo -e "  Options:"
+    echo -e "    -b tag        Specify a locally-build image tag rather than 'latest'"
+    echo -e "    -d            Don't push the local tag"
+    echo -e "    -h            Show help"
+    echo -e "    -v variation  Append a variation suffix to the tagged images"
+}
+
 function dockerPushSemver() {
     LOCAL_TAG=latest
     VARIATION=""
@@ -11,15 +23,7 @@ function dockerPushSemver() {
             d) PUSH_LOCAL_TAG=no ;;
             v) VARIATION=$OPTARG ;;
             *)
-                echo -e "usage: docker_push_semver.sh [-d] [-b <tag>] [-v <variation>] <docker_repo> <semantic_version>"
-                echo -e "  Push semantically versioned major and minor version-tagged docker images for a"
-                echo -e "  locally built docker image."
-                echo -e ""
-                echo -e "  Options:"
-                echo -e "    -b tag        Specify a locally-build image tag rather than 'latest'"
-                echo -e "    -d            Don't push the local tag"
-                echo -e "    -h            Show help"
-                echo -e "    -v variation  Append a variation suffix to the tagged images"
+                dockerPushSemverUsage
                 return
         esac
     done
@@ -28,6 +32,11 @@ function dockerPushSemver() {
     
     DOCKER_REPO="$1"
     VERSION="$2"
+
+    if [[ -z "$DOCKER_REPO" || -z "$VERSION" ]]; then
+        dockerPushSemverUsage
+        return
+    fi
 
     # echo "LOCAL_TAG: $LOCAL_TAG"
     # echo "VARIATION: $VARIATION"
