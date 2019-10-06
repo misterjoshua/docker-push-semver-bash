@@ -22,7 +22,7 @@ function dockerPushSemver() {
     docker push $DOCKER_REPO:$LATEST
     
     # Tag and push this version
-    docker tag $DOCKER_REPO:$LATEST $DOCKER_REPO:$VERSION
+    docker tag $DOCKER_REPO:$LATEST $DOCKER_REPO:$VERSION$VARIATION
     docker push $DOCKER_REPO:$VERSION$VARIATION
 
     # If there's no special version (i.e., 1.2.3-beta123), push minor and major tags
@@ -36,5 +36,5 @@ function dockerPushSemver() {
 
 if [ "___docker_push_semver.sh" == "___`basename $0`" ]; then
     set -e
-    dockerPushSemver $1 $2
+    dockerPushSemver "$1" "$2" "$3" "$4"
 fi
