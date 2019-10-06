@@ -1,14 +1,38 @@
 #!/usr/bin/env bash
 
 function dockerPushSemver() {
-    DOCKER_REPO="$1"
-    VERSION=$2
-    
-    LATEST=latest
-    [ ! -z "$3" ] && LATEST=$3
-    
+    LOCAL_TAG=latest
     VARIATION=""
-    [ ! -z "$4" ] && VARIATION=$4
+    PUSH_LOCAL_TAG=yes
+    
+    while getopts "dhb:v:" OPT; do
+        case "$OPT" in
+            b) LOCAL_TAG=$OPTARG ;;
+            d) PUSH_LOCAL_TAG=no ;;
+            v) VARIATION=$OPTARG ;;
+            *)
+                echo -e "usage: docker_push_semver.sh [-d] [-b <tag>] [-v <variation>] <docker_repo> <semantic_version>"
+                echo -e "  Push semantically versioned major and minor version-tagged docker images for a"
+                echo -e "  locally built docker image."
+                echo -e ""
+                echo -e "  Options:"
+                echo -e "    -b tag        Specify a locally-build image tag rather than 'latest'"
+                echo -e "    -d            Don't push the local tag"
+                echo -e "    -h            Show help"
+                echo -e "    -v variation  Append a variation suffix to the tagged images"
+                return
+        esac
+    done
+
+    shift $((OPTIND - 1))
+    
+    DOCKER_REPO="$1"
+    VERSION="$2"
+
+    # echo "LOCAL_TAG: $LOCAL_TAG"
+    # echo "VARIATION: $VARIATION"
+    # echo "DOCKER_REPO: $DOCKER_REPO"
+    # echo "VERSION: $VERSION"
 
     # Parse semvers
     MAJOR=$(cut -d. -f1 <<<$VERSION)
@@ -18,23 +42,25 @@ function dockerPushSemver() {
     SPECIAL=$(cut -sd- -f2- <<<$REST)
     PATCH=${PATCH:=$REST}
 
-    # Push the latest tag
-    docker push $DOCKER_REPO:$LATEST
+    if [ "$PUSH_LOCAL_TAG" = "yes" ]; then
+        # Push the latest tag
+        docker push $DOCKER_REPO:$LOCAL_TAG
+    fi
     
     # Tag and push this version
-    docker tag $DOCKER_REPO:$LATEST $DOCKER_REPO:$VERSION$VARIATION
+    docker tag $DOCKER_REPO:$LOCAL_TAG $DOCKER_REPO:$VERSION$VARIATION
     docker push $DOCKER_REPO:$VERSION$VARIATION
 
     # If there's no special version (i.e., 1.2.3-beta123), push minor and major tags
     if [ -z "$SPECIAL" ]; then
-        docker tag $DOCKER_REPO:$LATEST $DOCKER_REPO:$MAJOR.$MINOR$VARIATION
-        docker tag $DOCKER_REPO:$LATEST $DOCKER_REPO:$MAJOR$VARIATION
+        docker tag $DOCKER_REPO:$LOCAL_TAG $DOCKER_REPO:$MAJOR.$MINOR$VARIATION
+        docker tag $DOCKER_REPO:$LOCAL_TAG $DOCKER_REPO:$MAJOR$VARIATION
         docker push $DOCKER_REPO:$MAJOR.$MINOR$VARIATION
         docker push $DOCKER_REPO:$MAJOR$VARIATION
     fi
 }
 
-if [ "___docker_push_semver.sh" == "___`basename $0`" ]; then
+if [ "___docker_push_semver.sh" == "___`basename -- $0`" ]; then
     set -e
-    dockerPushSemver "$1" "$2" "$3" "$4"
+    dockerPushSemver $*
 fi
