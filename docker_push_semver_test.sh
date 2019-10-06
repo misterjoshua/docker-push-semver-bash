@@ -31,14 +31,14 @@ dockerPushSemver "test-semver-special" "1.2.3-test" | grep "push.*test-semver-sp
 dockerPushSemver "test-semver-special" "1.2.3-test" | grep "push.*test-semver-special:1\$" >/dev/null && die "It pushed test-semver-special:1 with a SPECIAL"
 
 # Test variations on "latest"
-dockerPushSemver "test-3" "1.2.3" "" "-alpine" | grep "push.*test-3:latest\$" >/dev/null || die "It didn't push test-3:latest"
-dockerPushSemver "test-3" "1.2.3" "" "-alpine" | grep "push.*test-3:1.2.3-alpine\$" >/dev/null || die "It didn't push test-3:1.2.3-alpine"
-dockerPushSemver "test-3" "1.2.3" "" "-alpine" | grep "push.*test-3:1.2-alpine\$" >/dev/null || die "It didn't push test-3:1.2-alpine"
-dockerPushSemver "test-3" "1.2.3" "" "-alpine" | grep "push.*test-3:1-alpine\$" >/dev/null || die "It didn't push test-3:1-alpine"
+dockerPushSemver "test-variations" "1.2.3" "" "-alpine" | grep "push.*test-variations:latest\$" >/dev/null || die "It didn't push test-variations:latest"
+dockerPushSemver "test-variations" "1.2.3" "" "-alpine" | grep "push.*test-variations:1.2.3-alpine\$" >/dev/null || die "It didn't push test-variations:1.2.3-alpine"
+dockerPushSemver "test-variations" "1.2.3" "" "-alpine" | grep "push.*test-variations:1.2-alpine\$" >/dev/null || die "It didn't push test-variations:1.2-alpine"
+dockerPushSemver "test-variations" "1.2.3" "" "-alpine" | grep "push.*test-variations:1-alpine\$" >/dev/null || die "It didn't push test-variations:1-alpine"
 
 # Test variations with a specific latest tag
-dockerPushSemver "test-3" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-3:latest-alpine\$" >/dev/null || die "It didn't push test-3:latest-alpine"
-dockerPushSemver "test-3" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-3:1.2.3-alpine\$" >/dev/null || die "It didn't push test-3:1.2.3-alpine"
-dockerPushSemver "test-3" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-3:1.2-alpine\$" >/dev/null || die "It didn't push test-3:1.2-alpine"
-dockerPushSemver "test-3" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-3:1-alpine\$" >/dev/null || die "It didn't push test-3:1-alpine"
+dockerPushSemver "test-variation-othertag" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-variation-othertag:latest-alpine\$" >/dev/null || die "It didn't push test-variation-othertag:latest-alpine"
+dockerPushSemver "test-variation-othertag" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-variation-othertag:1.2.3-alpine\$" >/dev/null || die "It didn't push test-variation-othertag:1.2.3-alpine"
+dockerPushSemver "test-variation-othertag" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-variation-othertag:1.2-alpine\$" >/dev/null || die "It didn't push test-variation-othertag:1.2-alpine"
+dockerPushSemver "test-variation-othertag" "1.2.3" "latest-alpine" "-alpine" | grep "push.*test-variation-othertag:1-alpine\$" >/dev/null || die "It didn't push test-variation-othertag:1-alpine"
 echo "Tests succeeded"
