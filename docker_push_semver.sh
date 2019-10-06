@@ -6,7 +6,7 @@ function dockerPushSemverUsage() {
     echo -e "  image if the version number provided doesn't include a pre-release tag."
     echo -e ""
     echo -e "  Options:"
-    echo -e "    -b tag        Specify a locally-build image tag rather than 'latest'"
+    echo -e "    -b tag        Specify a local tag to use rather than 'latest'"
     echo -e "    -d            Don't push the local tag"
     echo -e "    -h            Show help"
     echo -e "    -v variation  Append a variation suffix to the tagged images"
